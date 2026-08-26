@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from downloader import downloader as dlp_mp4
 
 ctk.set_appearance_mode("system")
 
@@ -14,13 +15,13 @@ titulo = ctk.CTkLabel( # -> Titulo do Sofware
 )
 titulo.pack(pady=30) # -> espaço padrão 30 px
 
-url_entry = ctk.CTkEntry(
+entrada_url = ctk.CTkEntry(
     app,
     width=450,
     placeholder_text="Cole o link do vídeo",
     font=ctk.CTkFont(family="Indie Flower")
 )
-url_entry.pack(pady=10) # -> padrão é 10 px
+entrada_url.pack(pady=10) # -> padrão é 10 px
 
 formato = ctk.CTkSegmentedButton(
     app,
@@ -33,13 +34,18 @@ formato = ctk.CTkSegmentedButton(
 formato.set("MP4")
 formato.pack(pady=10)
 
+def baixar():
+    url = entrada_url.get()
+    dlp_mp4.baixar_mp4(url)
+
 botao_download = ctk.CTkButton(
     app,
     text="Baixar",
     hover=True,
     hover_color="Red",
     fg_color="Grey",
-    font=ctk.CTkFont("Indie Flower", weight = "bold", size=20)
+    font=ctk.CTkFont("Indie Flower", weight = "bold", size=20),
+    command=baixar()
 )
 botao_download.pack(pady=20)
 
