@@ -25,6 +25,9 @@ url_entry.pack(pady=10) # -> padrão é 10 px
 formato = ctk.CTkSegmentedButton(
     app,
     values=["MP4", "MP3"],
+    selected_color="Red",
+    selected_hover_color="Red",
+    unselected_color="Grey",
     font=ctk.CTkFont(family="Indie Flower", weight="bold")
 )
 formato.set("MP4")
@@ -33,6 +36,9 @@ formato.pack(pady=10)
 botao_download = ctk.CTkButton(
     app,
     text="Baixar",
+    hover=True,
+    hover_color="Red",
+    fg_color="Grey",
     font=ctk.CTkFont("Indie Flower", weight = "bold", size=20)
 )
 botao_download.pack(pady=20)
