@@ -6,22 +6,20 @@ app = ctk.CTk()
 app.geometry("600x400")
 app.title("Custom Media Downloader - By Saulo")
 
-# Criando fonte
-fonte = ctk.CtkFont(family="")
-
-titulo = ctk.CTkLabel(
+titulo = ctk.CTkLabel( # -> Titulo do Sofware
     app,
     text="Custom Media Downloader",
-    font=("Arial", 20),
+    font=ctk.CTkFont(family="Indie Flower", size=30),
 )
-titulo.pack(pady=30)
+titulo.pack(pady=30) # -> espaço padrão 30 px
 
 url_entry = ctk.CTkEntry(
     app,
     width=450,
-    placeholder_text="Cole o link do vídeo"
+    placeholder_text="Cole o link do vídeo",
+    font=ctk.CTkFont(family="Indie Flower")
 )
-url_entry.pack(pady=10)
+url_entry.pack(pady=10) # -> padrão é 10 px
 
 
 
