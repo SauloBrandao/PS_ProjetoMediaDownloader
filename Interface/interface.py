@@ -1,4 +1,8 @@
+import threading
+from _pyrepl import commands
+
 import customtkinter as ctk
+from downloader.downloader import baixar_mp4
 
 ctk.set_appearance_mode("system")
 
@@ -6,7 +10,7 @@ app = ctk.CTk()
 app.geometry("600x400")
 app.title("Custom Media Downloader - By Saulo")
 
-titulo = ctk.CTkLabel( # -> Titulo do Sofware
+titulo = ctk.CTkLabel( # -> Titulo do Software
     app,
     text="Custom Media Downloader \n"
          "Feito por Saulo",
@@ -33,13 +37,23 @@ formato = ctk.CTkSegmentedButton(
 formato.set("MP4")
 formato.pack(pady=10)
 
+def inificar_download(): # -> Criando Thread para evitar que o tkinter crashe
+    url = url_entry.get()
+
+    threading.Thread(
+        target=baixar_mp4,
+        args=(url,),
+        daemon=True
+    ).start()
+
 botao_download = ctk.CTkButton(
     app,
     text="Baixar",
     hover=True,
     hover_color="Red",
     fg_color="Grey",
-    font=ctk.CTkFont("Indie Flower", weight = "bold", size=20)
+    font=ctk.CTkFont("Indie Flower",weight = "bold",size=20),
+    command=inificar_download
 )
 botao_download.pack(pady=20)
 
