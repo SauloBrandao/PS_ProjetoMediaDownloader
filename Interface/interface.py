@@ -4,29 +4,35 @@ import customtkinter as ctk
 from tkinter import filedialog
 from serviços.downloader.downloader import baixar_mp4, baixar_mp3
 
-def inificar_download(): # -> Criando Thread para evitar que o tkinter crashe
-    url = url_entrada.get()
-    pasta = selecionar_pasta()
+# Funções
+#------------------------------------------------------------------------------------------------
+def inificar_download(pasta: str): # -> Criando Função para iniciar Downloads e criar Threads
+    url = url_entrada.get() # -> pegando url inserida
 
     if formato.get() == "MP3":
-        threading.Thread(
+        threading.Thread( # -> Thread do MP3
             target=baixar_mp3,
             args=(url,pasta),
             daemon=True
         ).start()
 
     else:
-        threading.Thread(
+        threading.Thread( # -> Thread do MP4
             target=baixar_mp4,
             args=(url,pasta),
             daemon=True
         ).start()
 
 def selecionar_pasta(): # -> criando função para selecionar diretorio
-    return filedialog.askdirectory()
+    global pasta_destino # -> criando variavel global para armazenar pasta destino
 
+    caminho = filedialog.askdirectory()
 
+    if caminho: # -> validando se existe ou não
+        pasta_destino = caminho
 
+#------------------------------------------------------------------------------------------
+# Interface do CustomTkinter
 ctk.set_appearance_mode("system")
 
 app = ctk.CTk()
@@ -66,7 +72,7 @@ botao_download = ctk.CTkButton(
     hover_color="Red",
     fg_color="Grey",
     font=ctk.CTkFont("Indie Flower",weight = "bold",size=20),
-    command=inificar_download
+    command=lambda: inificar_download(pasta_destino),
 )
 botao_download.pack(pady=20)
 
