@@ -2,16 +2,24 @@ import threading
 
 import customtkinter as ctk
 from tkinter import filedialog
-from serviços.downloader.downloader import baixar_mp4
+from serviços.downloader.downloader import baixar_mp4, baixar_mp3
 
 def inificar_download(): # -> Criando Thread para evitar que o tkinter crashe
     url = url_entrada.get()
 
-    threading.Thread(
-        target=baixar_mp4,
-        args=(url,),
-        daemon=True
-    ).start()
+    if formato.get() == "MP3":
+        threading.Thread(
+            target=baixar_mp3,
+            args=(url,),
+            daemon=True
+        ).start()
+
+    else:
+        threading.Thread(
+            target=baixar_mp4,
+            args=(url,),
+            daemon=True
+        ).start()
 
 def selecionar_pasta(): # -> criando função para selecionar diretorio
     caminho = filedialog.askdirectory()
@@ -34,8 +42,6 @@ titulo = ctk.CTkLabel( # -> Titulo do Software
 )
 titulo.pack(pady=30) # -> espaço padrão 30 px
 
-
-
 url_entrada = ctk.CTkEntry(
     app,
     width=450,
@@ -52,7 +58,6 @@ formato = ctk.CTkSegmentedButton(
     unselected_color="Grey",
     font=ctk.CTkFont(family="Indie Flower", weight="bold")
 )
-formato.set("MP4")
 formato.pack(pady=10)
 
 botao_download = ctk.CTkButton(
@@ -69,6 +74,10 @@ botao_download.pack(pady=20)
 botao_pasta = ctk.CTkButton(
     app,
     text="Selecionar pasta",
+    hover=True,
+    hover_color="Red",
+    fg_color="Grey",
+    font=ctk.CTkFont("Indie Flower",weight = "bold",size=20),
     command=selecionar_pasta
 )
 botao_pasta.pack(padx=20, pady=20)

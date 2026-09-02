@@ -10,3 +10,21 @@ def baixar_mp4(url: str) -> None:
 
     with yt_dlp.YoutubeDL(opcoes) as ydl:
         ydl.download([url])
+
+
+def baixar_mp3(url: str) -> None:
+    opcoes = {
+        "format": "bestaudio/best",
+        "noplaylist": True,
+
+        "postprocessors": [
+            {
+                "key": "FFmpegExtractAudio",
+                "preferredcodec": "mp3",
+                "preferredquality": "192",
+            }
+        ]
+    }
+
+    with yt_dlp.YoutubeDL(opcoes) as ydl:
+        ydl.download([url])
