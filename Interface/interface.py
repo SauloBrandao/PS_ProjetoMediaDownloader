@@ -6,26 +6,25 @@ from serviços.downloader.downloader import baixar_mp4, baixar_mp3
 
 def inificar_download(): # -> Criando Thread para evitar que o tkinter crashe
     url = url_entrada.get()
+    pasta = selecionar_pasta()
 
     if formato.get() == "MP3":
         threading.Thread(
             target=baixar_mp3,
-            args=(url,),
+            args=(url,pasta),
             daemon=True
         ).start()
 
     else:
         threading.Thread(
             target=baixar_mp4,
-            args=(url,),
+            args=(url,pasta),
             daemon=True
         ).start()
 
 def selecionar_pasta(): # -> criando função para selecionar diretorio
-    caminho = filedialog.askdirectory()
+    return filedialog.askdirectory()
 
-    if caminho:
-        print(caminho)
 
 
 ctk.set_appearance_mode("system")
