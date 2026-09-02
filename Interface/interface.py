@@ -36,7 +36,7 @@ def selecionar_pasta(): # -> criando função para selecionar diretorio
 ctk.set_appearance_mode("system")
 
 app = ctk.CTk()
-app.geometry("600x400")
+app.geometry("600x500")
 app.title("Custom Media Downloader - By Saulo")
 
 titulo = ctk.CTkLabel( # -> Titulo do Software
@@ -54,6 +54,25 @@ url_entrada = ctk.CTkEntry(
     font=ctk.CTkFont(family="Indie Flower")
 )
 url_entrada.pack(pady=10) # -> padrão é 10 px
+
+caminho_selecionado = ctk.CTkEntry(
+    app,
+    width=450,
+    placeholder_text="Caminho Selecionado",
+    font=ctk.CTkFont(family="Indie Flower"),
+)
+caminho_selecionado.pack(pady=10)
+
+botao_pasta = ctk.CTkButton(
+    app,
+    text="Selecionar pasta",
+    hover=True,
+    hover_color="Red",
+    fg_color="Grey",
+    font=ctk.CTkFont("Indie Flower",weight = "bold",size=20),
+    command=selecionar_pasta
+)
+botao_pasta.pack(padx=20, pady=20)
 
 formato = ctk.CTkSegmentedButton(
     app,
@@ -76,16 +95,5 @@ botao_download = ctk.CTkButton(
     command=lambda: inificar_download(pasta_destino),
 )
 botao_download.pack(pady=20)
-
-botao_pasta = ctk.CTkButton(
-    app,
-    text="Selecionar pasta",
-    hover=True,
-    hover_color="Red",
-    fg_color="Grey",
-    font=ctk.CTkFont("Indie Flower",weight = "bold",size=20),
-    command=selecionar_pasta
-)
-botao_pasta.pack(padx=20, pady=20)
 
 app.mainloop()
