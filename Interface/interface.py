@@ -6,7 +6,7 @@ from serviços.downloader.downloader import baixar_mp4, baixar_mp3
 
 # Funções
 #------------------------------------------------------------------------------------------------
-def inificar_download(pasta: str): # -> Criando Função para iniciar Downloads e criar Threads
+def inificar_download(pasta: str): # — > Criando Função para iniciar ‘Downloads' e criar Threads
     url = url_entrada.get() # -> pegando url inserida
 
     if formato.get() == "MP3":
@@ -23,13 +23,17 @@ def inificar_download(pasta: str): # -> Criando Função para iniciar Downloads 
             daemon=True
         ).start()
 
-def selecionar_pasta(): # -> criando função para selecionar diretorio
-    global pasta_destino # -> criando variavel global para armazenar pasta destino
+
+def selecionar_pasta(): # — > criando função para selecionar diretório
+    global pasta_destino # -> criando variável global para armazenar pasta destino
+    global caminho_padrao
 
     caminho = filedialog.askdirectory()
 
-    if caminho: # -> validando se existe ou não
+    if caminho: # — > validando se existe ou não
         pasta_destino = caminho
+        caminho_padrao.set(caminho)
+
 
 #--------------------------------------------------------------------------------------------
 # Interface do CustomTkinter
@@ -55,14 +59,16 @@ url_entrada = ctk.CTkEntry(
 )
 url_entrada.pack(pady=10) # -> padrão é 10 px
 
+caminho_padrao = ctk.StringVar(value="C:/Users/Usuario/Downloads")
+
 exibicao_caminho = ctk.CTkEntry(
     app,
     width=450,
     placeholder_text="Caminho do seu computador",
+    textvariable=caminho_padrao,
     font=ctk.CTkFont(family="Indie Flower"),
 )
 exibicao_caminho.pack(pady=10)
-#exibicao_caminho.insert(0)
 exibicao_caminho.configure(state="disabled")
 
 botao_pasta = ctk.CTkButton(
