@@ -31,12 +31,12 @@ def selecionar_pasta(): # -> criando função para selecionar diretorio
     if caminho: # -> validando se existe ou não
         pasta_destino = caminho
 
-#------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------
 # Interface do CustomTkinter
 ctk.set_appearance_mode("system")
 
 app = ctk.CTk()
-app.geometry("600x400")
+app.geometry("600x450")
 app.title("Custom Media Downloader - By Saulo")
 
 titulo = ctk.CTkLabel( # -> Titulo do Software
@@ -55,26 +55,15 @@ url_entrada = ctk.CTkEntry(
 )
 url_entrada.pack(pady=10) # -> padrão é 10 px
 
-formato = ctk.CTkSegmentedButton(
+exibicao_caminho = ctk.CTkEntry(
     app,
-    values=["MP4", "MP3"],
-    selected_color="Red",
-    selected_hover_color="Red",
-    unselected_color="Grey",
-    font=ctk.CTkFont(family="Indie Flower", weight="bold")
+    width=450,
+    placeholder_text="Caminho do seu computador",
+    font=ctk.CTkFont(family="Indie Flower"),
 )
-formato.pack(pady=10)
-
-botao_download = ctk.CTkButton(
-    app,
-    text="Baixar",
-    hover=True,
-    hover_color="Red",
-    fg_color="Grey",
-    font=ctk.CTkFont("Indie Flower",weight = "bold",size=20),
-    command=lambda: inificar_download(pasta_destino),
-)
-botao_download.pack(pady=20)
+exibicao_caminho.pack(pady=10)
+#exibicao_caminho.insert(0)
+exibicao_caminho.configure(state="disabled")
 
 botao_pasta = ctk.CTkButton(
     app,
@@ -86,5 +75,26 @@ botao_pasta = ctk.CTkButton(
     command=selecionar_pasta
 )
 botao_pasta.pack(padx=20, pady=20)
+
+formato = ctk.CTkSegmentedButton(
+    app,
+    values=["MP4", "MP3"],
+    selected_color="Red",
+    selected_hover_color="Red",
+    unselected_color="Grey",
+    font=ctk.CTkFont(family="Indie Flower", weight="bold")
+)
+formato.pack(pady=1)
+
+botao_download = ctk.CTkButton(
+    app,
+    text="Baixar",
+    hover=True,
+    hover_color="Red",
+    fg_color="Grey",
+    font=ctk.CTkFont("Indie Flower",weight = "bold",size=20),
+    command=lambda: inificar_download(pasta_destino),
+)
+botao_download.pack(pady=20)
 
 app.mainloop()
