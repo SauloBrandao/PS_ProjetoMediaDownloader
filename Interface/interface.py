@@ -84,7 +84,8 @@ formato = ctk.CTkSegmentedButton(
     unselected_color="Grey",
     font=ctk.CTkFont(family="Indie Flower", weight="bold")
 )
-formato.pack(pady=1)
+formato.set("MP4")
+formato.pack(pady=10)
 
 botao_download = ctk.CTkButton(
     app,
