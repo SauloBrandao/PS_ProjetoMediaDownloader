@@ -3,7 +3,7 @@ import threading
 import customtkinter as ctk
 from tkinter import filedialog
 from tkinter import messagebox
-from serviços.downloader.downloader import baixar_mp4, baixar_mp3
+from downloader.downloader import baixar_mp4, baixar_mp3
 
 # Funções
 #------------------------------------------------------------------------------------------------
