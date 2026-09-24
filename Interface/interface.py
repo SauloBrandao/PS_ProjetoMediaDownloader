@@ -2,27 +2,32 @@ import threading
 
 import customtkinter as ctk
 from tkinter import filedialog
+from tkinter import messagebox
 from serviços.downloader.downloader import baixar_mp4, baixar_mp3
 
 # Funções
 #------------------------------------------------------------------------------------------------
+pasta_destino = ""
+
 def inificar_download(pasta: str): # — > Criando Função para iniciar ‘Downloads' e criar Threads
     url = url_entrada.get() # -> pegando url inserida
-
-    if formato.get() == "MP3":
-        threading.Thread( # -> Thread do MP3
-            target=baixar_mp3,
-            args=(url,pasta),
-            daemon=True
-        ).start()
-
+    if pasta_destino and url_entrada == "":
+        print("Caminho e Link não Selecionados")
+    elif pasta_destino or url_entrada == "":
+        print("Caminho ou Link inváldios")
     else:
-        threading.Thread( # -> Thread do MP4
-            target=baixar_mp4,
-            args=(url,pasta),
-            daemon=True
-        ).start()
-
+        if formato.get() == "MP3":
+            threading.Thread( # -> Thread do MP3
+                target=baixar_mp3,
+                args=(url,pasta),
+                daemon=True
+            ).start()
+        else:
+            threading.Thread( # -> Thread do MP4
+                target=baixar_mp4,
+                args=(url,pasta),
+                daemon=True
+            ).start()
 
 def selecionar_pasta(): # — > criando função para selecionar diretório
     global pasta_destino # -> criando variável global para armazenar pasta destino
@@ -34,7 +39,17 @@ def selecionar_pasta(): # — > criando função para selecionar diretório
         pasta_destino = caminho
         caminho_padrao.set(caminho)
 
+def validar_download():
+    pasta = pasta_destino
 
+    if not pasta:
+        messagebox.showerror(
+            title="Erro",
+            message="Selecione uma pasta de destino"
+        )
+        return
+
+    inificar_download(pasta)
 #--------------------------------------------------------------------------------------------
 # Interface do CustomTkinter
 ctk.set_appearance_mode("system")
@@ -42,6 +57,7 @@ ctk.set_appearance_mode("system")
 app = ctk.CTk()
 app.geometry("600x450")
 app.title("Custom Media Downloader - By Saulo")
+app.resizable(False, False)
 
 titulo = ctk.CTkLabel( # -> Titulo do Software
     app,
@@ -58,7 +74,6 @@ url_entrada = ctk.CTkEntry(
     font=ctk.CTkFont(family="Indie Flower")
 )
 url_entrada.pack(pady=10) # -> padrão é 10 px
-
 caminho_padrao = ctk.StringVar(value="C:/Users/Usuario/Downloads")
 
 exibicao_caminho = ctk.CTkEntry(
@@ -100,7 +115,7 @@ botao_download = ctk.CTkButton(
     hover_color="Red",
     fg_color="Grey",
     font=ctk.CTkFont("Indie Flower",weight = "bold",size=20),
-    command=lambda: inificar_download(pasta_destino),
+    command=lambda: validar_download(),
 )
 botao_download.pack(pady=20)
 
