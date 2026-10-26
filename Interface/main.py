@@ -67,6 +67,7 @@ app = ctk.CTk()
 app.geometry("600x450")
 app.title("Custom Media Downloader - By Saulo")
 app.resizable(False, False)
+app.iconbitmap("../conteudo/imagens/media_downloader_icon.ico")
 
 titulo = ctk.CTkLabel( # -> Titulo do Software
     app,
