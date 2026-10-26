@@ -3,55 +3,51 @@ import threading
 import customtkinter as ctk
 from tkinter import filedialog
 from tkinter import messagebox
+from pathlib import Path
 from downloader.downloader import baixar_mp4, baixar_mp3
 
 # Funções
 #------------------------------------------------------------------------------------------------
-pasta_destino = ""
+pasta_downloads = Path.home() / "Downloads"
 
-def inificar_download(pasta: str): # — > Criando Função para iniciar ‘Downloads' e criar Threads
-    url = url_entrada.get() # -> pegando url inserida
-    if pasta_destino and url_entrada == "":
-        print("Caminho e Link não Selecionados")
-    elif pasta_destino or url_entrada == "":
-        print("Caminho ou Link inváldios")
-    else:
-        if formato.get() == "MP3":
-            threading.Thread( # -> Thread do MP3
-                target=baixar_mp3,
-                args=(url,pasta),
-                daemon=True
-            ).start()
-        else:
-            threading.Thread( # -> Thread do MP4
-                target=baixar_mp4,
-                args=(url,pasta),
-                daemon=True
-            ).start()
-
+# Função de Seleção de Pasta
 def selecionar_pasta(): # — > criando função para selecionar diretório
-    global pasta_destino # -> criando variável global para armazenar pasta destino
-    global caminho_padrao
-
     caminho = filedialog.askdirectory()
 
     if caminho: # — > validando se existe ou não
-        pasta_destino = caminho
-        caminho_padrao.set(caminho)
+        caminho_destino.set(caminho)
+
+# Função de iniciar ‘Download’
+def iniciar_download(pasta: str): # — > Criando Função para iniciar ‘Downloads' e criar Threads
+    url = url_entrada.get() # -> pegando url inserida
+
+    if formato.get() == "MP3":
+        threading.Thread( # -> Thread do MP3
+            target=baixar_mp3,
+            args=(url,pasta),
+            daemon=True
+        ).start()
+
+    else:
+        threading.Thread( # -> Thread do MP4
+            target=baixar_mp4,
+            args=(url,pasta),
+            daemon=True
+        ).start()
 
 def validar_download():
-    pasta = pasta_destino
 
-    if not pasta:
+    if not url_entrada.get():
         messagebox.showerror(
             title="Erro",
-            message="Selecione uma pasta de destino"
+            message="Selecione uma url"
         )
         return
 
-    inificar_download(pasta)
+    iniciar_download(caminho_destino.get())
 #--------------------------------------------------------------------------------------------
 # Interface do CustomTkinter
+# Header
 ctk.set_appearance_mode("system")
 
 app = ctk.CTk()
@@ -65,27 +61,32 @@ titulo = ctk.CTkLabel( # -> Titulo do Software
          "Feito por Saulo",
     font=ctk.CTkFont(family="Indie Flower", size=30),
 )
-titulo.pack(pady=30) # -> espaço padrão 30 px
+titulo.pack(pady=30)
 
+#--------------------------------------------------------------------------------------------
+# Entradas e Botões
+# Entrada do URL
 url_entrada = ctk.CTkEntry(
     app,
     width=450,
     placeholder_text="Cole o link do vídeo",
     font=ctk.CTkFont(family="Indie Flower")
 )
-url_entrada.pack(pady=10) # -> padrão é 10 px
-caminho_padrao = ctk.StringVar(value="C:/Users/Usuario/Downloads")
+url_entrada.pack(pady=10)
+caminho_destino = ctk.StringVar(value=str(pasta_downloads))
 
+# Exibição de Caminho para ‘Download’
 exibicao_caminho = ctk.CTkEntry(
     app,
     width=450,
-    placeholder_text="Caminho do seu computador",
-    textvariable=caminho_padrao,
     font=ctk.CTkFont(family="Indie Flower"),
+    textvariable=caminho_destino
 )
 exibicao_caminho.pack(pady=10)
 exibicao_caminho.configure(state="disabled")
 
+
+# Seletor de Caminho
 botao_pasta = ctk.CTkButton(
     app,
     text="Selecionar pasta",
@@ -97,6 +98,7 @@ botao_pasta = ctk.CTkButton(
 )
 botao_pasta.pack(padx=20, pady=20)
 
+# Seletor de Formato
 formato = ctk.CTkSegmentedButton(
     app,
     values=["MP4", "MP3"],
@@ -108,6 +110,7 @@ formato = ctk.CTkSegmentedButton(
 formato.set("MP4")
 formato.pack(pady=10)
 
+# Botão de iniciar de ‘Download’
 botao_download = ctk.CTkButton(
     app,
     text="Baixar",
@@ -115,7 +118,7 @@ botao_download = ctk.CTkButton(
     hover_color="Red",
     fg_color="Grey",
     font=ctk.CTkFont("Indie Flower",weight = "bold",size=20),
-    command=lambda: validar_download(),
+    command=lambda: validar_download()
 )
 botao_download.pack(pady=20)
 
