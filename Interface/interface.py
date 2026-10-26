@@ -4,6 +4,7 @@ import customtkinter as ctk
 from tkinter import filedialog
 from tkinter import messagebox
 from pathlib import Path
+from urllib.parse import urlparse
 from downloader.downloader import baixar_mp4, baixar_mp3
 
 # Funções
@@ -35,12 +36,24 @@ def iniciar_download(pasta: str): # — > Criando Função para iniciar ‘Downl
             daemon=True
         ).start()
 
-def validar_download():
+def validar_url(url:str):
+    resultado = urlparse(url)
+    return resultado.scheme in ("http", "https") and bool(resultado.netloc)
 
-    if not url_entrada.get():
+def validar_download():
+    url = url_entrada.get().strip()
+
+    if not url:
         messagebox.showerror(
             title="Erro",
-            message="Selecione uma url"
+            message="Selecione uma URL"
+        )
+        return
+
+    if not validar_url(url):
+        messagebox.showerror(
+            title="Erro",
+            message="A URL informada é inválida."
         )
         return
 
@@ -84,7 +97,6 @@ exibicao_caminho = ctk.CTkEntry(
 )
 exibicao_caminho.pack(pady=10)
 exibicao_caminho.configure(state="disabled")
-
 
 # Seletor de Caminho
 botao_pasta = ctk.CTkButton(
