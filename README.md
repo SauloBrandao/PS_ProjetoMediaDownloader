@@ -7,8 +7,6 @@ de instalação e utilização da aplicação.
 Em caso de dúvidas, sugestões ou problemas relacionados ao projeto, entre em contato pelo e-mail: 
 saulopintobrandaofilho@gmail.com.
 
---- 
-
 ## 1- Panorama 
 Este projeto foi desenvolvido com dois objetivos principais.
 
@@ -58,8 +56,6 @@ Como mencionado anteriormente, este projeto teve como objetivo principal o apren
 habilidades em Python. Por esse motivo, priorizei video aulas no Youtube e a consulta às documentações oficiais das tecnologias 
 utilizadas, cujos links estão disponíveis na seção Tecnologias Utilizadas.
 
----
-
 ## 2 - Tecnologias utilizadas
 
 O Media Downloader foi desenvolvido utilizando a linguagem Python, em conjunto com bibliotecas que permitem a 
@@ -80,15 +76,14 @@ para o formato MP3.
 <br> Documentação: https://www.ffmpeg.org
 
 De resto foram utilizados módulos padrão do Python, Estes são:
-## pathlib
+### pathlib
 Módulo nativo do Python utilizado para manipular caminhos de arquivos e diretórios, facilitando a criação, localização e 
 organização dos arquivos no sistema
 
-## urllib.parse (urlparse)
+### urllib.parse (urlparse)
 Função da biblioteca padrão do Python utilizada para analisar e decompor URLs em seus componentes, como protocolo, domínio
 e caminho, auxiliando na validação dos links fornecidos pelo usuário.
 
----
 
 ## 3 - Como utilizar
 Para utilizar basta clonar o repositório, criar uma venv e ativa-lá e depois disso rodar os seguintes comandos:
@@ -107,8 +102,6 @@ Para utilizar basta clonar o repositório, criar uma venv e ativa-lá e depois dis
 <br> winget install Gyan.FFmpeg (Para verificar se foi instalado corretamente: ffmpeg -version)
 5. Rodar o Código
 <br> Basta executar o programa main.py (python main.py)
-
----
 
 ## 4 - Melhorias Futuras
 
