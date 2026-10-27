@@ -25,16 +25,22 @@ def iniciar_download(pasta: str): # — > Criando Função para iniciar ‘Downl
     if formato.get() == "MP3":
         threading.Thread( # -> Thread do MP3
             target=baixar_mp3,
-            args=(url,pasta),
+            args=(url,pasta, atualizar_progresso),
             daemon=True
         ).start()
 
     else:
         threading.Thread( # -> Thread do MP4
             target=baixar_mp4,
-            args=(url,pasta),
+            args=(url,pasta, atualizar_progresso),
             daemon=True
         ).start()
+
+def atualizar_progresso(valor):
+    app.after(
+        0,
+        lambda:barra_de_progresso.set(valor)
+    )
 
 def validar_url(url:str):
     resultado = urlparse(url)
@@ -64,7 +70,7 @@ def validar_download():
 ctk.set_appearance_mode("system")
 
 app = ctk.CTk()
-app.geometry("600x450")
+app.geometry("550x500")
 app.title("Custom Media Downloader - By Saulo")
 app.resizable(False, False)
 app.iconbitmap("../conteudo/imagens/media_downloader_icon.ico")
@@ -134,5 +140,14 @@ botao_download = ctk.CTkButton(
     command=lambda: validar_download()
 )
 botao_download.pack(pady=20)
+
+barra_de_progresso = ctk.CTkProgressBar(
+    app,
+    width=300,
+    height=200,
+    orientation="horizontal",
+)
+barra_de_progresso.pack(pady=20)
+barra_de_progresso.set(0)
 
 app.mainloop()
