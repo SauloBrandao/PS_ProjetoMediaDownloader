@@ -10,6 +10,7 @@ from downloader.downloader import baixar_mp4, baixar_mp3
 # Funções
 #------------------------------------------------------------------------------------------------
 pasta_downloads = Path.home() / "Downloads"
+lista_status = ["baixando","erro","concluído"]
 
 # Função de Seleção de Pasta
 def selecionar_pasta(): # — > criando função para selecionar diretório
@@ -70,7 +71,7 @@ def validar_download():
 ctk.set_appearance_mode("system")
 
 app = ctk.CTk()
-app.geometry("550x500")
+app.geometry("500x600")
 app.title("Custom Media Downloader - By Saulo")
 app.resizable(False, False)
 app.iconbitmap("../conteudo/imagens/media_downloader_icon.ico")
@@ -143,11 +144,19 @@ botao_download.pack(pady=20)
 
 barra_de_progresso = ctk.CTkProgressBar(
     app,
-    width=300,
-    height=200,
+    width=100,
+    height=20,
+    progress_color="Red",
     orientation="horizontal",
 )
 barra_de_progresso.pack(pady=20)
 barra_de_progresso.set(0)
+
+status = ctk.CTkLabel(
+    app,
+    text="",
+    font=ctk.CTkFont("Indie Flower", weight="bold", size=20),
+)
+status.pack(pady=20)
 
 app.mainloop()
