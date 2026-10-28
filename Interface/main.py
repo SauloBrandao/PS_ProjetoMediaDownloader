@@ -32,7 +32,7 @@ def iniciar_download(pasta: str): # — > Criando Função para iniciar ‘Downl
     else:
         threading.Thread( # -> Thread do MP4
             target=baixar_mp4,
-            args=(url,pasta, atualizar_progresso),
+            args=(url,pasta, atualizar_progresso, download_concluido),
             daemon=True
         ).start()
 
@@ -44,11 +44,18 @@ def atualizar_progresso(valor):
 
         if valor > 0.1 and (valor < 1.0):
             status.configure(text="Baixando")
-        elif valor < 0.1:
-            status.configure(text="Aguardando")
-        else:
-            status.configure(text="Concluido")
-            barra_de_progresso.set(0)
+
+    app.after(0, atualizar)
+
+def download_concluido():
+    def atualizar():
+        status.configure(text="Concluído")
+        messagebox.showinfo(
+            title="Download Cocluído",
+            message="O arquivo foi baixado com sucesso."
+        )
+        barra_de_progresso.set(0)
+        status.configure(text="Aguardando")
 
     app.after(0, atualizar)
 
@@ -166,7 +173,7 @@ barra_de_progresso.set(0)
 progresso_atual = ctk.DoubleVar(value=0)
 status = ctk.CTkLabel(
     app,
-    text="baixando" if progresso_atual.get() > 0.1 else "aguardando",
+    text="Aguardando",
     font=ctk.CTkFont("Indie Flower", weight="bold", size=20),
 )
 status.pack(pady=20)

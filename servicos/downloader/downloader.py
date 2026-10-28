@@ -1,7 +1,7 @@
 import yt_dlp
 from pathlib import Path
 
-def baixar_mp4(url: str,  pasta: str, progresso_resposta) -> None:
+def baixar_mp4(url: str,  pasta: str, progresso_resposta, concluido_resposta) -> None:
     opcoes = {
         "format": "bestvideo+bestaudio/best",
         "merge_output_format": "mp4",
@@ -17,6 +17,7 @@ def baixar_mp4(url: str,  pasta: str, progresso_resposta) -> None:
     with yt_dlp.YoutubeDL(opcoes) as ydl:
         ydl.download([url])
 
+    concluido_resposta()
 
 def baixar_mp3(url: str, pasta: str, progresso_resposta) -> None:
     opcoes = {
@@ -31,7 +32,7 @@ def baixar_mp3(url: str, pasta: str, progresso_resposta) -> None:
         ],
         "outtmpl": str(
             Path(pasta) / "%(title)s.%(ext)s"
-        ),
+        ),  
         "progress_hooks": [
             lambda d: progresso_download(d, progresso_resposta),
         ],
