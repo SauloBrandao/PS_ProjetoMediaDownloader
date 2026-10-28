@@ -10,7 +10,6 @@ from downloader.downloader import baixar_mp4, baixar_mp3
 # Funções
 #------------------------------------------------------------------------------------------------
 pasta_downloads = Path.home() / "Downloads"
-lista_status = ["baixando","erro","concluído"]
 
 # Função de Seleção de Pasta
 def selecionar_pasta(): # — > criando função para selecionar diretório
@@ -37,16 +36,28 @@ def iniciar_download(pasta: str): # — > Criando Função para iniciar ‘Downl
             daemon=True
         ).start()
 
+# Função de Atualizar Barra de progresso
 def atualizar_progresso(valor):
-    app.after(
-        0,
-        lambda:barra_de_progresso.set(valor)
-    )
+    def atualizar():
+        barra_de_progresso.set(valor)
+        progresso_atual.set(valor)
 
+        if valor > 0.1 and (valor < 1.0):
+            status.configure(text="Baixando")
+        elif valor < 0.1:
+            status.configure(text="Aguardando")
+        else:
+            status.configure(text="Concluido")
+            barra_de_progresso.set(0)
+
+    app.after(0, atualizar)
+
+# Função para validar url inserida
 def validar_url(url:str):
     resultado = urlparse(url)
     return resultado.scheme in ("http", "https") and bool(resultado.netloc)
 
+# Função para validar o ‘download’
 def validar_download():
     url = url_entrada.get().strip()
 
@@ -152,9 +163,10 @@ barra_de_progresso = ctk.CTkProgressBar(
 barra_de_progresso.pack(pady=20)
 barra_de_progresso.set(0)
 
+progresso_atual = ctk.DoubleVar(value=0)
 status = ctk.CTkLabel(
     app,
-    text="",
+    text="baixando" if progresso_atual.get() > 0.1 else "aguardando",
     font=ctk.CTkFont("Indie Flower", weight="bold", size=20),
 )
 status.pack(pady=20)
